@@ -102,7 +102,7 @@
                                 </tr>
                             </thead>
                             <tbody>
-                            @if($upcoming != null)
+                            @if($upComingClasses != null)
                             @foreach($upComingClasses as $upcoming)
                                 <tr>
                                     <td>
