@@ -126,8 +126,11 @@
                                         {{ \Carbon\Carbon::parse($lecture->time)->toTimeString() }}
                                     </td>
                                     <td>
+                                        @if(\App\Reg::where('unit', $lecture->unit)->count() != 0)
                                         {{ (\App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() / \App\Reg::where('unit', $lecture->unit)->count() ) * 100 }}
-
+                                        @else
+                                            0
+                                        @endif
                                         %</td>
                                 </tr>
                             @endforeach
