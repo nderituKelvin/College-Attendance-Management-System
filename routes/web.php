@@ -193,8 +193,9 @@ use Illuminate\Support\Facades\Route;
     Route::get('student/home',[
         'as' => 'studentHome',
         function(){
-            // get upcoming class by elimination method
             $allClassesRaw = Lecture::where('time', '>', \Carbon\Carbon::now())->orderBy('time', 'asc');
+            $res = null;
+            $upcoming = null;
             if($allClassesRaw->count() == 0){
                 $res = null;
                 $upcoming = null;
@@ -214,7 +215,6 @@ use Illuminate\Support\Facades\Route;
                 }
                 $upcoming = $data;
             }
-
             $supposedatts = 0;
             $attended = 0;
             foreach (Reg::where('student', Auth::user()->getAuthIdentifier())->get() as $reg){
@@ -225,15 +225,12 @@ use Illuminate\Support\Facades\Route;
                     }
                 }
             }
-
             if($supposedatts != 0){
                 $percatts = $attended/$supposedatts * 100;
             }else{
                 $percatts = 0;
             }
-
             $totalLecs = Attendance::where('student', Auth::user()->getAuthIdentifier())->count();
-
             return view('student.systemfiles.dashboard', [
                 'closestClass' => $res,
                 'upComingClasses' => $upcoming,

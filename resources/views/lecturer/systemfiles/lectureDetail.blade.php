@@ -16,7 +16,19 @@
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <h4 class="card-title">Attendance - {{ \App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() }} student(s) ({{ (\App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() / \App\Reg::where('unit', $lecture->unit)->count() ) * 100 }}%)</h4>
+                            <h4 class="card-title">Attendance -
+                                @if( \App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() != 0)
+                                    {{ \App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() }}
+                                @else
+                                    0
+                                @endif
+                                student(s) (
+                                @if(\App\Reg::where('unit', $lecture->unit)->count() != 0)
+                                {{ (\App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() / \App\Reg::where('unit', $lecture->unit)->count() ) * 100 }}
+                                @else
+                                0
+                                @endif
+                                    %)</h4>
                         </div>
                         <div class="col-md-6 text-right">
                             <a href="{{ route('closeSigning', ['lecid' => $lecture->id]) }}" class="btn btn-md btn-info">Close Signing</a>
