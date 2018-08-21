@@ -73,7 +73,7 @@
                                         @endif
                                     </td>
                                     <td>
-                                        @if(\App\Lecture::where('unit', $unit->id)->count() != 0)
+                                        @if(\App\Lecture::where('unit', $unit->id)->count() != 0 && \App\Reg::where('unit', $unit->id)->count() != 0)
                                         {{ substr((\App\Attendance::where('unit', $unit->id)->count() / (\App\Reg::where('unit', $unit->id)->count() * \App\Lecture::where('unit', $unit->id)->count() )   ) * 100, 0, 4) }}
                                         @else
                                             {{ 0 }}
