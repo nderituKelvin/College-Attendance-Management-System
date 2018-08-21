@@ -102,6 +102,7 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @if($upcoming != null)
                             @foreach($upComingClasses as $upcoming)
                                 <tr>
                                     <td>
@@ -118,7 +119,8 @@
                                         {{ \Carbon\Carbon::parse($upcoming->time)->toTimeString() }}
                                     </td>
                                 </tr>
-                                @endforeach
+                            @endforeach
+                            @endif
                             </tbody>
                         </table>
                     </div>
