@@ -1,5 +1,6 @@
 <?php
 
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
     Route::get('/',[
@@ -9,6 +10,11 @@ use Illuminate\Support\Facades\Route;
         }
     ]);
 
+    Route::post('postlogin', [
+        'as' => 'postLogin',
+        'uses' => 'UserController@login'
+    ]);
+
     Route::get('/signup',[
         'as' => 'signUpPage',
         function(){
@@ -16,12 +22,17 @@ use Illuminate\Support\Facades\Route;
         }
     ]);
 
+    Route::post('/postsignup', [
+        'as' => 'postSignUp',
+        'uses' => 'UserController@signUp'
+    ]);
+
     Route::get('/lecturer/home',[
         'as' => 'lecturerHome',
         function(){
             return view('lecturer.systemfiles.dashboard');
         }
-    ]);
+    ])->middleware('auth')->middleware('lec');
 
     Route::get('/lecturer/units',[
         'as' => 'lecturerUnits',
@@ -70,7 +81,7 @@ use Illuminate\Support\Facades\Route;
         function(){
             return view('student.systemfiles.dashboard');
         }
-    ]);
+    ])->middleware('auth')->middleware('stud');
 
     Route::get('student/units', [
         'as' => 'studentUnitList',
@@ -107,7 +118,10 @@ use Illuminate\Support\Facades\Route;
         }
     ]);
 
-
+    Route::get('logout', [
+       'as' => 'logout',
+       'uses' => 'UserController@logout'
+    ]);
 
 
 

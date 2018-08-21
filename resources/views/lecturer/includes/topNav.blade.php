@@ -11,8 +11,8 @@
         <ul class="navbar-nav navbar-nav-right">
             <li class="nav-item dropdown d-none d-xl-inline-block">
                 <a class="nav-link dropdown-toggle" id="UserDropdown" href="#" data-toggle="dropdown" aria-expanded="false">
-                    <span class="profile-text">LS299-SKJ-929</span>
-                    <img class="img-xs rounded-circle" src="{{ asset('cmds/images/faces/face1.jpg') }}" alt="Profile image">
+                    <span class="profile-text">{{ \Illuminate\Support\Facades\Auth::user()->regno }}</span>
+                    <img class="img-xs rounded-circle" src="{{ asset('storage/images/'.\App\Photo::where('native', 'user')->where('nativeid', \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())->first()->name) }}" alt="Profile image">
                 </a>
                 <div class="dropdown-menu dropdown-menu-right navbar-dropdown" aria-labelledby="UserDropdown">
                     <a href="{{ route('lecturerProfile') }}" class="dropdown-item mt-2">
@@ -21,7 +21,7 @@
                     <a href="{{ route('lecturerUpdatePassword') }}" class="dropdown-item">
                         Change Password
                     </a>
-                    <a href="{{ route('loginPage') }}" class="dropdown-item">
+                    <a href="{{ route('logout') }}" class="dropdown-item">
                         Logout
                     </a>
                 </div>

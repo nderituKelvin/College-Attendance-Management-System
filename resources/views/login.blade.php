@@ -20,11 +20,11 @@
                         <div class="col-lg-4 mx-auto">
                             <div class="auto-form-wrapper">
                                 <h1 class="text-center mb-4">Login</h1>
-                                <form action="#">
+                                <form action="{{ route('postLogin') }}" method="post">
                                     <div class="form-group">
                                         <label class="label">Registration Number</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Registration Number">
+                                            <input type="text" name="regno" required class="form-control" placeholder="Registration Number">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
 
@@ -35,7 +35,7 @@
                                     <div class="form-group">
                                         <label class="label">Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" placeholder="*********">
+                                            <input type="password" name="password" required class="form-control" placeholder="*********">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
 
@@ -43,6 +43,7 @@
                                             </div>
                                         </div>
                                     </div>
+                                    {{ csrf_field() }}
                                     <div class="form-group">
                                         <button class="btn btn-primary submit-btn btn-block">Login</button>
                                     </div>
@@ -72,6 +73,10 @@
         <script src="{{ asset('cmds/vendors/js/vendor.bundle.addons.js') }}"></script>
         <script src="{{ asset('cmds/js/off-canvas.js') }}"></script>
         <script src="{{ asset('cmds/js/misc.js') }}"></script>
+        @if(\Illuminate\Support\Facades\Session::has('message'))
+            <script type="text/javascript">
+                toastr.{{ \Illuminate\Support\Facades\Session::get('status') }}('{{ \Illuminate\Support\Facades\Session::get('message') }}', '{{ \Illuminate\Support\Facades\Session::get('title') }}');
+            </script>
+        @endif
     </body>
-
 </html>

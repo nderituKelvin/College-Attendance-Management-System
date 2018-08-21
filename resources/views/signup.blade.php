@@ -4,7 +4,6 @@
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
         <title>C.M.D.S - Sign Up</title>
-
         <link rel="stylesheet" href="{{ asset('cmds/vendors/iconfonts/mdi/css/materialdesignicons.min.css') }}">
         <link rel="stylesheet" href="{{ asset('cmds/vendors/iconfonts/puse-icons-feather/feather.css') }}">
         <link rel="stylesheet" href="{{ asset('cmds/vendors/css/vendor.bundle.base.css') }}">
@@ -23,11 +22,11 @@
                         <div class="col-lg-4 mx-auto">
                             <div class="auto-form-wrapper">
                                 <h1 class="text-center mb-4">Register</h1>
-                                <form action="#">
+                                <form action="{{ route('postSignUp') }}" method="post" enctype="multipart/form-data">
                                     <div class="form-group">
                                         <label class="label">Name</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Enter Your Name">
+                                            <input type="text" class="form-control" required name="name" placeholder="Enter Your Name">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
 
@@ -38,7 +37,18 @@
                                     <div class="form-group">
                                         <label class="label">Registration Number</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" placeholder="Registration Number">
+                                            <input type="text" class="form-control" required name="regno" placeholder="Registration Number">
+                                            <div class="input-group-append">
+                                              <span class="input-group-text">
+
+                                              </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label class="label">Select Profile Image</label>
+                                        <div class="input-group">
+                                            <input type="file" accept=".jpg, .png" required name="proffpic" class="form-control" placeholder="">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
 
@@ -49,9 +59,9 @@
                                     <div class="form-group">
                                         <label for="selectUserType" class="label">Usertype</label>
                                         <div class="input-group">
-                                            <select required id="selectUserType" class="form-control">
+                                            <select required id="selectUserType" name="usertype" class="form-control">
                                                 <option value="">Select Usertype</option>
-                                                <option value="std">Student</option>
+                                                <option value="stud">Student</option>
                                                 <option value="lec">Lecturer</option>
                                             </select>
                                         </div>
@@ -59,11 +69,9 @@
                                     <div class="form-group">
                                         <label class="label">Identification Number</label>
                                         <div class="input-group">
-                                            <input type="number" class="form-control" placeholder="Identification Number">
+                                            <input type="number" required name="idno" class="form-control" placeholder="Identification Number">
                                             <div class="input-group-append">
-                                              <span class="input-group-text">
-
-                                              </span>
+                                                <span class="input-group-text"></span>
                                             </div>
                                         </div>
                                     </div>
@@ -71,7 +79,7 @@
                                     <div class="form-group">
                                         <label class="label">Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" placeholder="*********">
+                                            <input type="password" name="password" required class="form-control" placeholder="*********">
                                             <div class="input-group-append">
                                               <span class="input-group-text">
 
@@ -83,15 +91,13 @@
                                     <div class="form-group">
                                         <label class="label">Confirm Password</label>
                                         <div class="input-group">
-                                            <input type="password" class="form-control" placeholder="*********">
+                                            <input type="password" name="conpass" required class="form-control" placeholder="*********">
                                             <div class="input-group-append">
-                                              <span class="input-group-text">
-
-                                              </span>
+                                              <span class="input-group-text"></span>
                                             </div>
                                         </div>
                                     </div>
-
+                                    {{ csrf_field() }}
                                     <div class="form-group">
                                         <button class="btn btn-success submit-btn btn-block">Sign Up</button>
                                     </div>
@@ -115,5 +121,10 @@
         <script src="{{ asset('cmds/vendors/js/vendor.bundle.addons.js') }}"></script>
         <script src="{{ asset('cmds/js/off-canvas.js') }}"></script>
         <script src="{{ asset('cmds/js/misc.js') }}"></script>
+        @if(\Illuminate\Support\Facades\Session::has('message'))
+        <script type="text/javascript">
+        toastr.{{ \Illuminate\Support\Facades\Session::get('status') }}('{{ \Illuminate\Support\Facades\Session::get('message') }}', '{{ \Illuminate\Support\Facades\Session::get('title') }}');
+        </script>
+        @endif
     </body>
 </html>

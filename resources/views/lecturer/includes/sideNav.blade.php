@@ -4,10 +4,10 @@
             <div class="nav-link">
                 <div class="user-wrapper">
                     <div class="profile-image">
-                        <img src="{{ asset('cmds/images/faces/face1.jpg') }}" alt="profile image">
+                        <img src="{{ asset('storage/images/'.\App\Photo::where('native', 'user')->where('nativeid', \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())->first()->name) }}" alt="profile image">
                     </div>
                     <div class="text-wrapper">
-                        <p class="profile-name">Nderitu Kelvin</p>
+                        <p class="profile-name">{{ \Illuminate\Support\Facades\Auth::user()->name }}</p>
                         <div>
                             <small class="designation text-muted">Lecturer</small>
                             <span class="status-indicator online"></span>

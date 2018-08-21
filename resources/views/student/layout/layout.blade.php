@@ -37,7 +37,9 @@
         <script src="{{ asset('cmds/js/off-canvas.js') }}"></script>
         <script src="{{ asset('cmds/js/misc.js') }}"></script>
         @if(\Illuminate\Support\Facades\Session::has('message'))
-            toastr.{{ \Illuminate\Support\Facades\Session::get('status') }}('{{ \Illuminate\Support\Facades\Session::get('message') }}', '{{ \Illuminate\Support\Facades\Session::get('title') }});
+            <script type="text/javascript">
+                toastr.{{ \Illuminate\Support\Facades\Session::get('status') }}('{{ \Illuminate\Support\Facades\Session::get('message') }}', '{{ \Illuminate\Support\Facades\Session::get('title') }}');
+            </script>
         @endif
         @yield('theScripts')
     </body>
