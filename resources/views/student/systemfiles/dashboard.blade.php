@@ -14,12 +14,12 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Units</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $totalUnits }}</h3>
                             </div>
                         </div>
                     </div>
                     <p class="text-muted mt-3 mb-0">
-                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> 0 % Attendance
+                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> {{ $percAtts }} % Attendance
                     </p>
                 </div>
             </div>
@@ -35,12 +35,12 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Lectures</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">0</h3>
+                                <h3 class="font-weight-medium text-right mb-0">{{ $totalLecs }}</h3>
                             </div>
                         </div>
                     </div>
                     <p class="text-muted mt-3 mb-0">
-                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> 0 % Attendance
+                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> {{ $percAtts }} % Attendance
                     </p>
                 </div>
             </div>
@@ -55,12 +55,23 @@
                         <div class="float-right">
                             <p class="mb-0 text-right">Next Class in</p>
                             <div class="fluid-container">
-                                <h3 class="font-weight-medium text-right mb-0">3 days 5 hours</h3>
+                                <h3 class="font-weight-medium text-right mb-0">
+                                    @if($closestClass == null)
+                                        -----
+                                    @else
+                                        {{ \Carbon\Carbon::parse($closestClass->time)->diffForHumans() }}
+                                    @endif
+                                </h3>
                             </div>
                         </div>
                     </div>
                     <p class="text-muted mt-3 mb-0">
-                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i> Automata Theorem
+                        <i class="mdi mdi-alert-octagon mr-1" aria-hidden="true"></i>
+                        @if($closestClass == null)
+                            No Upcoming Class
+                        @else
+                            {{ $closestClass->title }}
+                        @endif
                     </p>
                 </div>
             </div>
@@ -80,10 +91,10 @@
                                         Name
                                     </th>
                                     <th>
-                                        Lecturer
+                                        Unit
                                     </th>
                                     <th>
-                                        Location
+                                        Lecturer
                                     </th>
                                     <th>
                                         Time
@@ -91,20 +102,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($upComingClasses as $upcoming)
                                 <tr>
                                     <td>
-                                        Nderitu Kelvin
+                                        {{ $upcoming->title }}
                                     </td>
                                     <td>
-                                        Kelvin Nderitu
+                                        {{ \App\Unit::where('id', $upcoming->unit)->first()->name }}
                                     </td>
                                     <td>
-                                        AB13
+                                        {{ \App\User::where('id', $upcoming->lec)->first()->name }}
                                     </td>
                                     <td>
-                                        May 15, 2015
+                                        {{ \Carbon\Carbon::parse($upcoming->time)->toFormattedDateString() }} -
+                                        {{ \Carbon\Carbon::parse($upcoming->time)->toTimeString() }}
                                     </td>
                                 </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

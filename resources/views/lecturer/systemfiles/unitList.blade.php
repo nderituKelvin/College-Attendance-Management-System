@@ -10,7 +10,7 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Add a Unit</h4>
-                            <form method="post" class="forms-sample">
+                            <form method="post" action="{{ route('postAddUnit') }}" class="forms-sample">
                                 <div class="form-group row">
                                     <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Unit Code: </label>
                                     <div class="col-sm-9">
@@ -23,6 +23,7 @@
                                         <input required minlength="4" type="text" name="unitname" class="form-control" id="" placeholder="Unit Name">
                                     </div>
                                 </div>
+                                {{ csrf_field() }}
                                 <button type="submit" class="btn btn-success mr-2"> <i class="mdi mdi-plus-box"></i> Add Unit</button>
                                 <button class="btn btn-light reset">Cancel</button>
                             </form>
@@ -56,26 +57,36 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach($units as $unit)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('lecturerUnitDetail') }}">CIT 3304</a>
-
+                                        <a href="{{ route('lecturerUnitDetail', ['unitid' => $unit->id]) }}">{{ $unit->code }}</a>
                                     </td>
                                     <td>
-                                        <a href="{{ route('lecturerUnitDetail') }}">Automata Theorem</a>
+                                        <a href="{{ route('lecturerUnitDetail', ['unitid' => $unit->id]) }}">{{ $unit->name }}</a>
                                     </td>
                                     <td>
+                                        @if($unit->status == "active")
                                        <button class="btn btn-xs btn-success disabled">Active</button>
+                                        @else
+                                        <button class="btn btn-xs btn-info disabled">Completed</button>
+                                        @endif
                                     </td>
                                     <td>
-                                        30 %
+                                        @if(\App\Lecture::where('unit', $unit->id)->count() != 0)
+                                        {{ substr((\App\Attendance::where('unit', $unit->id)->count() / (\App\Reg::where('unit', $unit->id)->count() * \App\Lecture::where('unit', $unit->id)->count() )   ) * 100, 0, 4) }}
+                                        @else
+                                            {{ 0 }}
+                                        @endif
+                                         %
                                     </td>
                                 </tr>
-
+                                @endforeach
                             </tbody>
                         </table>
-                        Pagination Here
                     </div>
+                    <br>
+                    {{ $units->links() }}
                 </div>
             </div>
         </div>

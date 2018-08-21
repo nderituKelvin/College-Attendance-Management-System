@@ -12,16 +12,16 @@
                             <h4 class="card-title">Profile</h4>
                             <div class="row">
                                 <div class="col-md-3">
-                                    <img src="{{ asset('cmds/images/faces/face1.jpg') }}" class="img-lg rounded-circle" alt="">
+                                    <img src="{{ asset('storage/images/'.\App\Photo::where('native', 'user')->where('nativeid', \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())->first()->name) }}" class="img-lg rounded-circle" alt="">
                                 </div>
                                 <div class="col-md-3">
-                                    Reg No: JKBDKJ-239-DKN
+                                    Reg No: {{ \Illuminate\Support\Facades\Auth::user()->regno }}
                                 </div>
                                 <div class="col-md-3">
-                                    Name: Nderitu Kelvin
+                                    Name: {{ \Illuminate\Support\Facades\Auth::user()->name }}
                                 </div>
                                 <div class="col-md-3">
-                                    ID: 20028901
+                                    ID: {{ \Illuminate\Support\Facades\Auth::user()->idno }}
                                 </div>
 
                             </div>
@@ -38,17 +38,17 @@
                     <div class="card">
                         <div class="card-body">
                             <h4 class="card-title">Edit Profile</h4>
-                            <form method="post" class="forms-sample">
+                            <form method="post" action="{{ route('postLecUpdateProfile') }}" class="forms-sample" enctype="multipart/form-data">
                                 <div class="form-group row">
                                     <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Name: </label>
                                     <div class="col-sm-9">
-                                        <input required minlength="3" type="text" name="name" class="form-control" id="" placeholder="Enter Your Name">
+                                        <input required minlength="3" value="{{ \Illuminate\Support\Facades\Auth::user()->name }}" type="text" name="name" class="form-control" id="" placeholder="Enter Your Name">
                                     </div>
                                 </div>
                                 <div class="form-group row">
                                     <label for="exampleInputEmail2" class="col-sm-3 col-form-label">ID Number: </label>
                                     <div class="col-sm-9">
-                                        <input required minlength="7" type="text" name="idno" class="form-control" id="" placeholder="Enter Your National ID Number">
+                                        <input required minlength="7" value="{{ \Illuminate\Support\Facades\Auth::user()->idno }}" type="number" name="idno" class="form-control" id="" placeholder="Enter Your National ID Number">
                                     </div>
                                 </div>
 
@@ -58,7 +58,7 @@
                                         <input type="file" name="proffpic" class="form-control" id="" placeholder="Unit Name">
                                     </div>
                                 </div>
-
+                                {{ csrf_field() }}
                                 <button type="submit" class="btn btn-success mr-2"> <i class="mdi mdi-account-edit"></i> Update</button>
                                 <button class="btn btn-light reset">Cancel</button>
                             </form>

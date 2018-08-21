@@ -22,38 +22,35 @@
                                     Lecturer
                                 </th>
                                 <th>
-                                    Status
-                                </th>
-                                <th>
                                     Average Attendance
                                 </th>
-
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach($regs as $reg)
+                                <?php $unit = \App\Unit::where('id', $reg->unit)->first() ?>
                                 <tr>
                                     <td>
-                                        <a href="{{ route('studentUnitDetail') }}">CIT 3304</a>
+                                        <a href="{{ route('studentUnitDetail', ['unitid' => $unit->id] ) }}">{{ $unit->code }}</a>
 
                                     </td>
                                     <td>
-                                        <a href="{{ route('studentUnitDetail') }}">Automata Theorem</a>
+                                        <a href="{{ route('studentUnitDetail', ['unitid' => $unit->id]) }}">{{ $unit->name }}</a>
                                     </td>
                                     <td>
-                                        <img src="{{ asset('cmds/images/faces/face1.jpg') }}" class="img-md rounded-circle" alt="">
-                                        Nderitu Kelvin
+                                        <img src="{{ asset('storage/images/'.\App\Photo::where('native', 'user')->where('nativeid', $unit->lec)->first()->name) }}" class="img-md rounded-circle" alt="">
+                                        {{ \App\User::where('id', $unit->lec)->first()->name }}
                                     </td>
                                     <td>
-                                       <button class="btn btn-xs btn-success disabled">Active</button>
-                                    </td>
-                                    <td>
-                                        30 %
+                                        {{ substr((\App\Attendance::where('student', \Illuminate\Support\Facades\Auth::user()->getAuthIdentifier())->where('unit', $unit->id)->count() / \App\Lecture::where('unit', $unit->id)->count()) * 100, 0, 4) }}
+                                        %
                                     </td>
                                 </tr>
-
+                            @endforeach
                             </tbody>
                         </table>
-                        Pagination Here
+                        <br>
+                        {{ $regs->links() }}
                     </div>
                 </div>
             </div>

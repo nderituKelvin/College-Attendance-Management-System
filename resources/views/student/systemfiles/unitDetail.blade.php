@@ -18,30 +18,22 @@
                                     <th>
                                         Date
                                     </th>
-                                    <th>Attendance</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('studentLectureDetail') }}">
-                                            Finite Matter
-                                        </a>
-                                    </td>
-                                    <td>
-                                        3rd July 2017
-                                    </td>
-                                    <td>78 %</td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('studentLectureDetail') }}">Finite Matter</a>
-                                    </td>
-                                    <td>
-                                        3rd July 2017
-                                    </td>
-                                    <td>20%</td>
-                                </tr>
+                            @foreach($lecs as $lec)
+                            <tr>
+                                <td>
+                                    <a href="{{ route('studentLectureDetail', ['leid' => $lec->id]) }}">
+                                        {{ $lec->title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    {{ \Carbon\Carbon::parse($lec->time)->toFormattedDateString() }}
+                                    {{ \Carbon\Carbon::parse($lec->time)->toTimeString() }}
+                                </td>
+                            </tr>
+                            @endforeach
                             </tbody>
                         </table>
                     </div>

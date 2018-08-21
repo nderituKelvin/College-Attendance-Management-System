@@ -24,48 +24,27 @@
                                     <th>
                                         Attendance
                                     </th>
-                                    <th></th>
                                 </tr>
                             </thead>
                             <tbody>
+                                @foreach($lectures as $lecture)
                                 <tr>
                                     <td>
-                                        <a href="{{ route('lecturerLectureDetail') }}">
-                                            Finite Matter
+                                        <a href="{{ route('lecturerLectureDetail', ['lectureid' => $lecture->id]) }}">
+                                            {{ $lecture->title }}
                                         </a>
                                     </td>
                                     <td>
-                                        <a href="{{ route('lecturerUnitDetail') }}">
-                                            Automata Theorem
+                                        <a href="{{ route('lecturerUnitDetail', ['unitid' => $lecture->unit]) }}">
+                                            {{ \App\Unit::where('id', $lecture->unit)->first()->name }}
                                         </a>
                                     </td>
                                     <td>
-                                        3rd July 2017
+                                        {{ \Carbon\Carbon::parse($lecture->time)->diffForHumans() }}
                                     </td>
                                     <td>78 %</td>
-                                    <td>
-                                        <a href="" class="btn btn-success btn-xs">
-                                            <i class="mdi mdi-open-in-app"></i>Start
-                                        </a>
-                                    </td>
                                 </tr>
-                                <tr>
-                                    <td>
-                                        <a href="{{ route('lecturerLectureDetail') }}">Finite Matter</a>
-                                    </td>
-                                    <td>
-                                        Automata Theorem
-                                    </td>
-                                    <td>
-                                        3rd July 2017
-                                    </td>
-                                    <td>20%</td>
-                                    <td>
-                                        <a href="" class="btn btn-danger btn-xs">
-                                            <i class="mdi mdi-open-in-app"></i>End
-                                        </a>
-                                    </td>
-                                </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

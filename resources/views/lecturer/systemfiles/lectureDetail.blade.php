@@ -5,40 +5,21 @@
 @section('theBody')
     <div class="row">
         <div class="col-md-12 text-center">
-            <h2>Unit: Automata Theorem</h2>
-            <h4>Lecture: Finite Matter</h4>
+            <h2>Unit: {{ $unit->name }}</h2>
+            <h4>Lecture: {{ $lecture->title }}</h4>
         </div>
     </div>
+    <br>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
                     <div class="row">
                         <div class="col-md-6">
-                            <button class="btn btn-outline btn-success btn-block">
-                                Start Lecture
-                            </button>
-                        </div>
-                        <div class="col-md-6">
-                            <button class="btn btn-outline btn-danger btn-block">
-                                End Lecture
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-lg-12 grid-margin stretch-card">
-            <div class="card">
-                <div class="card-body">
-                    <div class="row">
-                        <div class="col-md-6">
-                            <h4 class="card-title">Attendance - 40 students (70%)</h4>
+                            <h4 class="card-title">Attendance - {{ \App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() }} student(s) ({{ (\App\Attendance::where('lec', $lecture->id)->where('unit', $lecture->unit)->count() / \App\Reg::where('unit', $lecture->unit)->count() ) * 100 }}%)</h4>
                         </div>
                         <div class="col-md-6 text-right">
-                            <button class="btn btn-md btn-info">Submit Attendance List</button>
+                            <a href="{{ route('closeSigning', ['lecid' => $lecture->id]) }}" class="btn btn-md btn-info">Close Signing</a>
                         </div>
                     </div>
 
@@ -64,49 +45,42 @@
                             </tr>
                             </thead>
                             <tbody>
+                            @foreach(\App\Reg::where('unit', $lecture->unit)->get() as $reg)
+                                <?php $student = \App\User::where('id', $reg->student)->first() ?>
                                 <tr>
                                     <td>
-                                        <img src="{{ asset('cmds/images/faces/face1.jpg') }}" alt="" class="img img-circle">
+                                        <img src="{{ asset('storage/images/'.\App\Photo::where('native', 'user')->where('nativeid', $student->id)->first()->name) }}" alt="" class="img img-circle">
                                     </td>
                                     <td>
-                                        CT592-0112/2012
+                                        {{ $student->regno }}
                                     </td>
                                     <td>
-                                        Nderitu Kelvin
+                                        {{ $student->name }}
                                     </td>
                                     <td>
+                                        @if(\App\Attendance::where('student', $student->id)->where('lec', $lecture->id)->where('unit', $lecture->unit)->count() == 1)
                                         <button class="btn btn-xs btn-rounded btn-success" disabled="" href="">
                                             <i class="mdi mdi-check-circle"></i>
                                         </button>
+                                        @else
+                                            <button class="btn btn-xs btn-rounded btn-danger" disabled="" href="">
+                                                <i class="mdi mdi-sign-caution"></i>
+                                            </button>
+                                        @endif
                                     </td>
                                     <td>
-                                        <a class="btn btn-xs btn-danger" href="">
+                                        @if(\App\Attendance::where('student', $student->id)->where('lec', $lecture->id)->where('unit', $lecture->unit)->count() == 1)
+                                        <a class="btn btn-xs btn-danger" href="{{ route('revokeAttendance', ['atid' => \App\Attendance::where('student', $student->id)->where('lec', $lecture->id)->where('unit', $lecture->unit)->first()->id]) }}">
                                             <i class="mdi mdi-cancel"></i> Revoke
                                         </a>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td>
-                                        <img src="{{ asset('cmds/images/faces/face1.jpg') }}" alt="" class="img img-circle">
-                                    </td>
-                                    <td>
-                                        CT592-0112/2012
-                                    </td>
-                                    <td>
-                                        Nderitu Kelvin
-                                    </td>
-                                    <td>
-                                        <button class="btn btn-xs btn-rounded btn-danger" disabled="" href="">
-                                            <i class="mdi mdi-sign-caution"></i>
+                                        @else
+                                        <button class="btn btn-xs btn-danger" disabled href="#">
+                                            <i class="mdi mdi-cancel"></i> Revoke
                                         </button>
-                                    </td>
-                                    <td>
-                                        <a class="btn btn-xs btn-danger" href="">
-                                            <i class="mdi mdi-cancel"></i> Revoke
-                                        </a>
+                                        @endif
                                     </td>
                                 </tr>
-
+                                @endforeach
                             </tbody>
                         </table>
 
@@ -120,11 +94,11 @@
             <div class="card">
                 <div class="card-body">
                     <h4 class="card-title">Post Lecture Learning Material Here</h4>
-                    <form method="post" class="forms-sample">
+                    <form method="post" action="{{ route('postAddLearningMaterial') }}" class="forms-sample" enctype="multipart/form-data">
                         <div class="form-group row">
                             <label for="exampleInputEmail2" class="col-sm-3 col-form-label">Title: </label>
                             <div class="col-sm-9">
-                                <input required minlength="5" type="text" name="topic" class="form-control" id="">
+                                <input required minlength="5" type="text" name="title" class="form-control" id="">
                             </div>
                         </div>
                         <div class="form-group row">
@@ -133,7 +107,8 @@
                                 <input required type="file" name="material" class="form-control" id="">
                             </div>
                         </div>
-
+                        <input type="hidden" value="{{ $lecture->id }}" name="lecture">
+                        {{ csrf_field() }}
                         <button type="submit" class="btn btn-success mr-2"> <i class="mdi mdi-upload-multiple"></i> Upload Material</button>
                     </form>
                 </div>
@@ -166,21 +141,23 @@
                                 </tr>
                             </thead>
                             <tbody>
+                            @foreach($materials as $material)
                                 <tr>
                                     <td>
-                                        1
+                                        {{ $material->id }}
                                     </td>
                                     <td>
-                                        <a href="">
-                                            Infinate matter encapsulation
+                                        <a href="{{ asset('storage/materials/'.$material->file) }}">
+                                            {{ $material->title }}
                                         </a>
                                     </td>
                                     <td>
-                                        <button class="btn btn-xs btn-danger">
+                                        <a href="{{ route('lecDeleteMaterial', ['file' => $material->file]) }}" class="btn btn-xs btn-danger">
                                             <i class="mdi mdi-delete"></i>Remove
-                                        </button>
+                                        </a>
                                     </td>
                                 </tr>
+                            @endforeach
                             </tbody>
                         </table>
 
