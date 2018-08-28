@@ -9,9 +9,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-    Route::get('login', function (){
-        return redirect()->route('loginPage');
-    });
+    Route::get('login', [
+        'as' => 'login',
+        function (){
+            return redirect()->route('loginPage');
+        }
+    ]);
 
     Route::get('/',[
         'as' => 'loginPage',
