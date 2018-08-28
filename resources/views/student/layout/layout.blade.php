@@ -24,7 +24,7 @@
                     <footer class="footer">
                         <div class="container-fluid clearfix">
                         <span class="text-muted d-block text-center text-sm-left d-sm-inline-block">Copyright © {{ date('Y') }}
-                            <a href="https://www.github.com/nderituKelvin" target="_blank">Nderitu Kelvin</a>. All rights reserved.</span>
+                            <a href="https://www.github.com/nderituKelvin" target="_blank">Meru University</a>. All rights reserved.</span>
                         </div>
                     </footer>
                 </div>

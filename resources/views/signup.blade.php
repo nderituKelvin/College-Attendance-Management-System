@@ -109,7 +109,7 @@
                                 </form>
                             </div>
                             <br>
-                            <p class="footer-text text-center">Nderitu Kelvin, Copyright © {{ date("Y") }} .</p>
+                            <p class="footer-text text-center">Meru University, Copyright © {{ date("Y") }} .</p>
                         </div>
                     </div>
                 </div>
