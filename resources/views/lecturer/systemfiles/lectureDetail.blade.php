@@ -10,7 +10,8 @@
         </div>
     </div>
     <br>
-    <div class="row">
+    <br>
+    <div class="row" id="printable">
         <div class="col-lg-12 grid-margin stretch-card">
             <div class="card">
                 <div class="card-body">
@@ -30,9 +31,8 @@
                                 @endif
                                     %)</h4>
                         </div>
-                        <div class="col-md-6 text-right">
-                            <a href="{{ route('closeSigning', ['lecid' => $lecture->id]) }}" class="btn btn-md btn-info">Close Signing</a>
-                        </div>
+
+
                     </div>
 
                     <div class="table-responsive">
@@ -100,6 +100,13 @@
                 </div>
             </div>
         </div>
+        <div class="col-md-12 text-center">
+            <a href="{{ route('closeSigning', ['lecid' => $lecture->id]) }}" class="btn btn-md btn-info">Close Signing</a>
+            <button id="printAtt" class="btn btn-md btn-primary print"> Print</button>
+        </div>
+        <br>
+        <br>
+        <br>
     </div>
     <div class="row">
         <div class="col-lg-12 grid-margin stretch-card">
@@ -181,5 +188,12 @@
 
 @endsection
 @section('theScripts')
-
+    <script src="{{ asset('js/jQuery.print.min.js') }}"></script>
+    <script type='text/javascript'>
+        $(function() {
+            $("#printable").find('.print').on('click', function() {
+                $.print("#printable");
+            });
+        });
+    </script>
 @endsection
